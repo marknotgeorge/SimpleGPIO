@@ -2,6 +2,7 @@
 using NSubstitute;
 using SimpleGPIO.Boards;
 using SimpleGPIO.GPIO;
+using SimpleGPIO.I2C;
 using SimpleGPIO.Tests.GPIO;
 using Xunit;
 
@@ -54,6 +55,19 @@ namespace SimpleGPIO.Tests.Boards
             //assert
             for (var x = 0; x < 28; x++)
                 Assert.Equal(x, pins[x].Pin);
+        }
+
+        [Fact]
+        public void CanGetI2CBus()
+        {
+            // arrange
+            var newI2CBus = Substitute.For<II2CBusInterface>();
+
+            // act
+            var board = new BroadcomBoard(i2CBusInterface: newI2CBus);
+
+            // assert
+            Assert.IsAssignableFrom<II2CBusInterface>(board.I2C);
         }
 
         [Fact]

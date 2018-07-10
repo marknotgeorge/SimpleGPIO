@@ -1,5 +1,6 @@
-﻿using System;
-using SimpleGPIO.GPIO;
+﻿using SimpleGPIO.GPIO;
+using SimpleGPIO.I2C;
+using System;
 
 namespace SimpleGPIO.Boards
 {
@@ -7,9 +8,24 @@ namespace SimpleGPIO.Boards
     {
         private readonly Func<byte, IPinInterface> _pinInterfaceFactory;
 
-        public BroadcomBoard(Func<byte, IPinInterface> pinInterfaceFactory = null)
+        public BroadcomBoard(
+            Func<byte, IPinInterface> pinInterfaceFactory = null,
+            II2CBusInterface i2CBusInterface = null)
         {
             _pinInterfaceFactory = pinInterfaceFactory ?? PinInterfaceFactory.NewPinInterface;
+            I2C = i2CBusInterface ?? I2CBusInterfaceFactory.NewI2CBus();
+        }
+
+        public II2CBusInterface I2C
+        {
+            get
+            {
+                return I2C;
+            }
+            private set
+            {
+                I2C = value;
+            }
         }
 
         private readonly IPinInterface[] gpio = new IPinInterface[28];
@@ -52,6 +68,7 @@ namespace SimpleGPIO.Boards
         {
             for (var id = 0; id < 28; id++)
                 gpio[id]?.Dispose();
+            I2C.Dispose();
         }
     }
 }
