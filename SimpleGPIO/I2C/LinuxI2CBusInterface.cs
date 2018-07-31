@@ -5,12 +5,11 @@ namespace SimpleGPIO.I2C
 {
     internal class LinuxI2CBusInterface : II2CBusInterface
     {
-        private readonly FileSystem _fileSystem;
+        
         private Dictionary<int, II2CDeviceInterface> _devices;
 
-        public LinuxI2CBusInterface(FileSystem fileSystem)
-        {
-            this._fileSystem = fileSystem;
+        public LinuxI2CBusInterface()
+        {            
             _devices = new Dictionary<int, II2CDeviceInterface>();
         }
 

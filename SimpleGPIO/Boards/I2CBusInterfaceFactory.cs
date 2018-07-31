@@ -12,13 +12,10 @@ namespace SimpleGPIO.Boards
          public static II2CBusInterface NewI2CBus()
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                return new LinuxI2CBusInterface(FileSystem);
+                return new LinuxI2CBusInterface();
 
             throw new NotImplementedException($"{GetOSName()} is not yet supported");
-        }
-
-        private static FileSystem FileSystem
-            => new FileSystem(path => new FileInfoWrapper(path), (fs, path, predicate, action) => new FileWatcher(fs, path, predicate, action));
+        }       
 
         private static string GetOSName()
             => RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "Windows"
